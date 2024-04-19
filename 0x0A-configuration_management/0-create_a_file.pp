@@ -1,3 +1,5 @@
+#creates a file using puppet
+
 file { '/tmp/school':
   ensure  => file,
   owner   => 'www-data',
