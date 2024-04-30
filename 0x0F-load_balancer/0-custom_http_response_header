@@ -19,6 +19,6 @@ server {
 }
 EOT
 
-sudo systemctl restart nginx
+sudo init 6 restart nginx
 
-sudo systemctl enable nginx
+sudo init 2 enable nginx
