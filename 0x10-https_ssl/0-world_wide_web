@@ -1,24 +1,28 @@
 #!/usr/bin/env bash
-
 # Function to display subdomain information
-display_subdomain() {
-  local domain="$1"
-  local subdomain="$2"
 
-  if [ -z "$subdomain" ]; then
-    subdomain="www lb-01 web-01 web-02"
-  fi
-
-  for s in $subdomain; do
-    dig +short "$s.$domain" | awk '{print "The subdomain", s, "is a", $1, "record and points to", $NF}'
-  done
-}
-
-# Check if the required arguments are provided
-if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-  echo "Usage: $0 <domain> [<subdomain>]"
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 domain [subdomain1 subdomain2 ...]"
   exit 1
 fi
 
-# Display subdomain information
-display_subdomain "$1" "$2"
+# Set domain name
+domain="$1"
+
+# Set subdomains to query
+subdomains=("www" "lb-01" "web-01" "web-02")
+
+# If additional subdomains are provided as arguments, add them to the subdomains array
+if [ $# -gt 1 ]; then
+  subdomains+=("${@:2}")
+fi
+
+# Loop through subdomains and display information
+for subdomain in "${subdomains[@]}"; do
+  output=$(dig "$subdomain.$domain" +short)
+  if [ -n "$output" ]; then
+    echo "The subdomain $subdomain has IP address $output"
+  else
+    echo "The subdomain $subdomain does not exist"
+  fi
+done
