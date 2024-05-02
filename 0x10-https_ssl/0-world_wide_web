@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Function to display subdomain information
+display_subdomain() {
+  local domain="$1"
+  local subdomain="$2"
+
+  if [ -z "$subdomain" ]; then
+    subdomain="www lb-01 web-01 web-02"
+  fi
+
+  for s in $subdomain; do
+    dig +short "$s.$domain" | awk '{print "The subdomain", s, "is a", $1, "record and points to", $NF}'
+  done
+}
+
+# Check if the required arguments are provided
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  echo "Usage: $0 <domain> [<subdomain>]"
+  exit 1
+fi
+
+# Display subdomain information
+display_subdomain "$1" "$2"
