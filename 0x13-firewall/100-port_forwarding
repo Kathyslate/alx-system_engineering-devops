@@ -78,3 +78,6 @@ COMMIT
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT
+
+
+so now go to command line and enter the sudo command     sudo iptables -A PREROUTING -t nat -p tcp --dport 8080 -j REDIRECT --to-ports 80
